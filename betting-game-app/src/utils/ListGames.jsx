@@ -1,8 +1,9 @@
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import { socket } from '../socket';
+import { PlaceBet } from '../components/PlaceBet';
 
-export function ListGames({ listGames,userData }) {
+export function ListGames({ listGames, userData }) {
   const [joinedGame, setJoinedGame] = useState(false);
   const [joinedRoom, setJoinedRoom] = useState({});
   const [stillLobby, setStillLobby] = useState(true);
@@ -24,7 +25,7 @@ export function ListGames({ listGames,userData }) {
       console.log(joinedRoom);
     }
     function onStillLobby(value){
-      console.log("Still in the fucking lobby");
+      console.log("Still in the lobby");
       console.log(value);
     }
     socket.on('start-game', onJoinedGame);
@@ -36,8 +37,8 @@ export function ListGames({ listGames,userData }) {
   }, []);
   return (
     <>
-    {joinedGame ? (<p>We joined game</p>):(<ul>
-      {listGames.map((roomObject, index) => {
+    {joinedGame ? (<PlaceBet userData = {userData} joinedRoom={joinedRoom}/>):(<ul>
+      {listGames?.map((roomObject, index) => {
         for (const roomName in roomObject) {
           if (roomObject.hasOwnProperty(roomName)) {
             const roomProperties = roomObject[roomName];

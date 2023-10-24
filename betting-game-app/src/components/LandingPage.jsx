@@ -7,10 +7,10 @@ import FormLabel from '@mui/material/FormLabel';
 import { socket } from '../socket';
 import { ConnectionState } from '../utils/ConectionState';
 import { ListGames } from '../utils/ListGames';
-import { Button, TextField, Select, MenuItem } from '@mui/material';
+import { Button, Select, MenuItem } from '@mui/material';
 
 export const LandingPage = ({ setValue, value, userData }) => {
-  const [create, setCreate] = React.useState(1);
+  const [create, setCreate] = React.useState(0);
   const [isConnected, setIsConnected] = React.useState(socket.connected);
   const [gameRoomData, setgameRoomData] = React.useState([]);
   const [userRoom, setUserRoom] = React.useState(null);
@@ -110,12 +110,6 @@ export const LandingPage = ({ setValue, value, userData }) => {
             <MenuItem value={500}>500</MenuItem>
             <MenuItem value={1000}>1000</MenuItem>
           </Select>
-          {/* <TextField
-            placeholder='Input Balance'
-            value={balance}
-            name='balance'
-            onChange={handleBalanceChange}
-          /> */}
           <Button type="submit">Submit</Button>
         </FormControl>
       </form> : <ListGames listGames={gameRoomData.games_list} userData={userData} />}
