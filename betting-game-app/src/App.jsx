@@ -14,11 +14,11 @@ function App() {
     <>
       {Object.keys(userData).length !==0  ? <>
         <LandingPage setValue={setValue} value={value} userData={userData}/>
-        <Tournament B={100} N={value} />
+        {/* <Tournament B={100} N={value} />
         <Button onClick={() => {
           setStartBets(!startBets)
         }}>Click to Start</Button>
-        {startBets && <PlaceBet />}
+        {startBets && <PlaceBet />} */}
       </>: <><Login userData={userData} setUserData={setUserData} /></> }
 
     </>

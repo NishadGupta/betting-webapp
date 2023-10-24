@@ -8,17 +8,17 @@ import { socket } from '../socket';
 import { ConnectionState } from '../utils/ConectionState';
 import { ListGames } from '../utils/ListGames';
 import { Button, Select, MenuItem } from '@mui/material';
+import { PlaceBet } from './PlaceBet';
 
 export const LandingPage = ({ setValue, value, userData }) => {
   const [create, setCreate] = React.useState(0);
   const [isConnected, setIsConnected] = React.useState(socket.connected);
-  const [gameRoomData, setgameRoomData] = React.useState([]);
+  const [gameRoomsData, setgameRoomsData] = React.useState([]);
   const [userRoom, setUserRoom] = React.useState(null);
   const [balance, setBalance] = React.useState(100);
   const handleBalanceChange = (event) => {
     setBalance(event.target.value);
   };
-  // const handleCreateRoom = ()
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent the default form submission (page reload)
     const userRoomDeets = {
@@ -48,10 +48,8 @@ export const LandingPage = ({ setValue, value, userData }) => {
       setIsConnected(false);
     }
     function onListGames(value) {
-      setgameRoomData(value);
-      // console.log(gameRoomData)
+      setgameRoomsData(value);
     }
-
     socket.connect();
     socket.emit('listGames', { uuid: userData.uuid });
     socket.on('get_games_list', onListGames);
@@ -59,7 +57,7 @@ export const LandingPage = ({ setValue, value, userData }) => {
       socket.off('get_games_list', onListGames);
     };
 
-  }, [gameRoomData]);
+  }, [gameRoomsData]);
 
   React.useEffect(() => {
     function onCreateGame(value) {
@@ -70,7 +68,7 @@ export const LandingPage = ({ setValue, value, userData }) => {
     return () => {
       socket.off('lobby', onCreateGame);
     };
-  }, []);
+  }, [userRoom]);
   return (
     //Consume API for Rooms
     <>
@@ -80,11 +78,7 @@ export const LandingPage = ({ setValue, value, userData }) => {
       {create ? 
       <form onSubmit={handleSubmit}>
         <>{userRoom ? ( 
-        <div>
-          <p>Room ID: {userRoom.game_uuid}</p>
-          <p>Total Players: {value == 3 ? 10 : 18}</p>
-          <p>Starting balance: {balance}</p>
-        </div>
+          <PlaceBet userData={userData} joinedRoom={userRoom}/>
       ) : (
         // Render a loading state or other content while waiting for data
         <p>Loading...</p>
@@ -112,7 +106,7 @@ export const LandingPage = ({ setValue, value, userData }) => {
           </Select>
           <Button type="submit">Submit</Button>
         </FormControl>
-      </form> : <ListGames listGames={gameRoomData.games_list} userData={userData} />}
+      </form> : <ListGames listGames={gameRoomsData.games_list} userData={userData} />}
     </>
   );
 }

@@ -4,17 +4,16 @@ import { socket } from "../socket";
 
 export const PlaceBet = ({userData, joinedRoom}) =>{
     const [bet, setBet] = useState(-1);
-    const [continueGame, setContinueGame] = useState(null);
-    const [lostGame, setLostGame] = useState(null);
-    const [wonGame, setWonGame] = useState(null);
+    const [continueGame, setContinueGame] = useState(false);
+    const [lostGame, setLostGame] = useState(false);
+    const [wonGame, setWonGame] = useState(false);
     const [userWinnings, setUserWinnings] = useState(null);
     
     const handleBetValue = (event)=>{
         setBet(event.target.value);
         setContinueGame(true);
     }
-    const handlePlaceBet = (event) => {
-        event.preventDefault();
+    const handlePlaceBet = () => {
         const playerBetDeets = {
             'game_uuid': joinedRoom.game_uuid,
             'uuid':userData.uuid,
@@ -36,6 +35,7 @@ export const PlaceBet = ({userData, joinedRoom}) =>{
             setContinueGame(false);
             setLostGame(false);
             setWonGame(true);
+            setUserWinnings(value);
         }
         function onLost(value){
             console.log(`Round lost by ${userData.uuid}`);
@@ -52,19 +52,17 @@ export const PlaceBet = ({userData, joinedRoom}) =>{
             socket.off('winner', onWinner);
             socket.off('lost', onLost);
         };
-    },[])
+    },[continueGame, lostGame, wonGame])
     return(<>
     <div>
         <h1>You've joined Room: {joinedRoom.game_uuid}</h1>
-        <form onSubmit={handlePlaceBet}>
-            <TextField
+        <TextField
             placeholder='Place Bet value'
             value={bet}
             name='betValue'
             onChange={handleBetValue}
-          />
-          <Button type="submit">Submit</Button>
-        </form>
+        />
+        <Button type="submit" onClick={handlePlaceBet}>Submit</Button>
     </div>
     </>);
 }
