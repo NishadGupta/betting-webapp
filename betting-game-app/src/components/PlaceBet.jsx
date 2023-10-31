@@ -13,6 +13,9 @@ export const PlaceBet = ({userData, joinedRoom}) =>{
         setBet(event.target.value);
         setContinueGame(true);
     }
+    const setBetValue = (value) => {
+        setBet(value)
+    }
     const handlePlaceBet = () => {
         const playerBetDeets = {
             'game_uuid': joinedRoom.game_uuid,
@@ -20,6 +23,7 @@ export const PlaceBet = ({userData, joinedRoom}) =>{
             'bet':parseInt(bet),
         }
         socket.emit('place_bets',playerBetDeets);
+        setBetValue(0)
     }
     useEffect(()=>{
         function onContinue(value){
@@ -54,8 +58,27 @@ export const PlaceBet = ({userData, joinedRoom}) =>{
         };
     },[continueGame, lostGame, wonGame])
     return(<>
-    <div>
-        <h1>You've joined Room: {joinedRoom.game_uuid}</h1>
+    {continueGame ?
+        <div>
+            <h1>You've joined Room: {joinedRoom.game_uuid}</h1>
+            <TextField
+                placeholder='Place Bet value'
+                value={bet}
+                name='betValue'
+                onChange={handleBetValue}
+            />
+            <Button type="submit" onClick={handlePlaceBet}>Submit</Button>
+        </div>
+    : lostGame ?
+        <div>
+            <h1>Sorry You've lost the game, better luck next time</h1>
+        </div>
+    : wonGame ?
+        <div>
+            <h1>Congratulations you've won the game!</h1>
+        </div>
+    : <div>
+        <h1>Continue: {joinedRoom.game_uuid}</h1>
         <TextField
             placeholder='Place Bet value'
             value={bet}
@@ -64,5 +87,6 @@ export const PlaceBet = ({userData, joinedRoom}) =>{
         />
         <Button type="submit" onClick={handlePlaceBet}>Submit</Button>
     </div>
+    }
     </>);
 }
