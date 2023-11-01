@@ -7,8 +7,8 @@ export const Login = ({ userData, setUserData }) => {
         const formData = new FormData(form);
         const formJson = Object.fromEntries(formData.entries());
         // await fetch('http://betting.eastus.cloudapp.azure.com:5000/loginPlayer'), {
-        await fetch('https://betting30.eastus.cloudapp.azure.com/loginPlayer', {
-        // await fetch('http://127.0.0.1:5000/loginPlayer', {
+        // await fetch('https://bettingtrial1.azurewebsites.net/loginPlayer', {
+        await fetch('http://ec2-3-21-83-110.us-east-2.compute.amazonaws.com:5000/loginPlayer', {
             mode: 'cors',
             headers: {
                 Accept: "application/json",

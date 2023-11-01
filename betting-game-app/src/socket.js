@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 // const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://127.0.0.1:5000';
 
 // export const socket = io('http://betting.eastus.cloudapp.azure.com:5000', {
-export const socket = io('https://betting30.eastus.cloudapp.azure.com', {
-// export const socket = io('http://127.0.0.1:5000', {
+export const socket = io('http://ec2-3-21-83-110.us-east-2.compute.amazonaws.com:5000', {
+// export const socket = io('http://127.0.0.1:5001', {
     autoConnect: false
   });

@@ -43,6 +43,7 @@ export const PlaceBet = ({ userData, joinedRoom }) => {
             setWonGame(true);
             setSkippedGame(false);
             setUserWinnings(value);
+            setSkipRound(false);
         }
         function onLost(value) {
             console.log(`Round lost by ${userData.uuid}`);
@@ -72,7 +73,11 @@ export const PlaceBet = ({ userData, joinedRoom }) => {
         };
     }, [continueGame, lostGame, wonGame, skippedGame])
     return (<>
-        {continueGame ?
+        {skippedGame ?
+                        <div>
+                            <h1>Congratulations you've won this round and skipped the next round!</h1>
+                        </div>
+        : continueGame ?
             <div>
                 <h1>Continue: {joinedRoom.game_uuid}</h1>
                 <TextField
@@ -91,11 +96,7 @@ export const PlaceBet = ({ userData, joinedRoom }) => {
                     <div>
                         <h1>Congratulations you've won the game! Here's your price </h1>
                     </div>
-                    : skippedGame ?
-                        <div>
-                            <h1>Congratulations you've won this round and skipped the next round!</h1>
-                        </div>
-                        :
+                    :
                         <div>
                             <h1>You've joined Room: {joinedRoom.game_uuid}</h1>
                             <TextField
